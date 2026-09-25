@@ -108,7 +108,7 @@ public:
         return newNode;
     }
     bool Palindrome(ListNode* head)
-    {
+    {//回文链表判断迭代法
         if(head==nullptr||head->next==nullptr)
             return true;
         ListNode* left = head;
@@ -164,7 +164,7 @@ ListNode* InterSectionList(ListNode* a,ListNode* b)
 }
 
 bool HasCycle(ListNode* head)
-{
+{//环形链表
     if(head==nullptr||head->next==nullptr)
         return false;
     ListNode* fast = head;
@@ -180,8 +180,33 @@ bool HasCycle(ListNode* head)
     }
     return false;
 }
-ListNode* MergeTwoList(ListNode* a,ListNode* b)
+ListNode* HasCycle2(ListNode* head)
 {
+    if(head==nullptr||head->next==nullptr)
+        return nullptr;
+    ListNode* fast=head,*slow = head;
+    int index=-1;
+    ListNode* point=head;
+    while(fast!=nullptr&&fast->next!=nullptr)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+        if(fast==slow)
+        {
+            index=0;
+        }
+        if(index!=-1)
+        {
+            if(slow==point)
+                return point;
+           point = point->next;
+           index++;
+        }
+    }
+    return nullptr;
+}
+ListNode* MergeTwoList(ListNode* a,ListNode* b)
+{//链表合并
     if(a==nullptr)
         return b;
     if(b==nullptr)
@@ -243,7 +268,7 @@ ListNode* SortMergeTowList2(ListNode* head1,ListNode* head2)
     return dummy.next;
 }
 ListNode* ListSort(ListNode* head)
-{
+{//链表排序
     if(head==nullptr)
         return head;
     //先获得链表长度
@@ -316,4 +341,43 @@ ListNode* sortList(ListNode* head,ListNode* tail)
 ListNode* sortList(ListNode* head)
 {
     return sortList(head,nullptr);
+}
+ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) 
+{
+    int add=0;
+    ListNode* head=new ListNode();
+    ListNode* temp = head;
+    while(l1!=nullptr||l2!=nullptr)
+    {
+        int val = (l1!=nullptr?l1->val:0)+(l2!=nullptr?l2->val:0);
+        if(add!=0)
+        {
+            val+=add;
+            add=0;
+        }
+        if(val>=10)
+        {
+            add=1;
+            val=val%10;
+        }
+        temp->next=new ListNode(val);
+        temp = temp->next;
+        if(l1!=nullptr)
+            l1 = l1->next;
+        if(l2!=nullptr)
+            l2 = l2->next;
+    }
+    if(add!=0)
+        temp->next = new ListNode(add);
+    //head->next = ReverseList(head->next);
+    return head->next;
+}
+ListNode* ReverseList(ListNode* head)
+{
+    if(head==nullptr||head->next==nullptr)
+        return head;
+    ListNode* newNode=ReverseList(head->next);
+    head->next->next = head;
+    head->next = nullptr;
+    return newNode;
 }
